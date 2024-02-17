@@ -3,7 +3,7 @@ const passport = require('passport');
 
 router.use('/', require('./swagger'));
 //router.use('/course', require('./course'));
-router.use('/instructors', require('./instructors'));
+router.use('./laptop', require('./laptop'));
 
 
 router.get(

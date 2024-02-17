@@ -1,12 +1,12 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-const getAllInstructors = async (req, res) => {
+const getAll = async (req, res) => {
   //#swagger.tags=['Users']
   mongodb
     .getDb()
     .db()
-    .collection('instructors')
+    .collection('laptop')
     .find()
     .toArray((err, lists) => {
       if (err) {
@@ -24,7 +24,7 @@ const getAllInstructors = async (req, res) => {
 
 };
 
-const getInstructor = async (req, res) => {
+const getSingle = async (req, res) => {
   //#swagger.tags=['Users']
   if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid contact id to find a contact.');
@@ -33,7 +33,7 @@ const getInstructor = async (req, res) => {
     mongodb
     .getDb()
     .db()
-    .collection('instructors')
+    .collection('laptop')
     .find({ _id: userId })
     .toArray((err, result) => {
       if (err) {
@@ -58,7 +58,7 @@ const getInstructor = async (req, res) => {
 };
 
 
-const postInstructor = async (req, res) => {
+const createLaptop = async (req, res) => {
     //#swagger.tags=['Users']
       const user = {
           email: req.body.email,
@@ -66,7 +66,7 @@ const postInstructor = async (req, res) => {
           name: req.body.name,
           ipaddress: req.body.ipaddress
         };
-        const response = await mongodb.getDatabase().db().collection('instructors').insertOne(user);
+        const response = await mongodb.getDatabase().db().collection('laptop').insertOne(user);
         if (response.acknowledged) {
           res.status(204).send();
         } else {
@@ -74,16 +74,16 @@ const postInstructor = async (req, res) => {
         }
   };
 
-  const putInstructor = async (req, res) => {
+  const updateLaptop = async (req, res) => {
     //#swagger.tags=['Users']
-      const userId = new ObjectId(req.params.id);
+     const userId = new ObjectId(req.params.id);
       const user = {
           email: req.body.email,
           username: req.body.username,
           name: req.body.name,
           ipaddress: req.body.ipaddress
       };
-      const response = await mongodb.getDatabase().db().collection('instructors').replaceOne({ _id: userId }, user);
+      const response = await mongodb.getDatabase().db().collection('laptop').replaceOne({ _id: userId }, user);
         if (response.modifiedCount > 0) {
         res.status(204).send();
       } else {
@@ -91,13 +91,13 @@ const postInstructor = async (req, res) => {
       }
     };
 
-    const deleteInstructor = async (req, res) => {
+    const deleteLaptop = async (req, res) => {
         //#swagger.tags=['Users']
         if (!ObjectId.isValid(req.params.id)) {
             res.status(400).json('Must use a valid contact id to delete a contact.');
           }
         const userId = new ObjectId(req.params.id);
-        const response = await mongodb.getDatabase().db().collection('instructors').deleteOne({ _id: userId });
+        const response = await mongodb.getDatabase().db().collection('laptop').deleteOne({ _id: userId });
         if (response.deletedCount > 0) {
           res.status(204).send();
         } else {
@@ -105,9 +105,9 @@ const postInstructor = async (req, res) => {
         }
       };
 module.exports = {
-    getAllInstructors,
-    getInstructor,
-    postInstructor,
-    putInstructor,
-    deleteInstructor
+    getAll,
+    getSingle,
+    createLaptop,
+    updateLaptop,
+    deleteLaptop
 };
